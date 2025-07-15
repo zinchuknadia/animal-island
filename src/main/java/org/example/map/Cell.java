@@ -3,27 +3,44 @@ package org.example.map;
 import org.example.model.Animal;
 import org.example.model.Plant;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Cell {
-    private Set<Animal> animals = new HashSet<>();
-    private Set<Plant> plants = new HashSet<>();
+    //TODO:synchronize lists to prevent maxAmount overleak
+    private List<Animal> animals = new ArrayList<>();
+    private List<Plant> plants = new ArrayList<>();
 
+    private int x;
+    private int y;
 
-    public Set<Animal> getAnimals() {
+    public Cell(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public List<Animal> getAnimals() {
         return animals;
     }
 
-    public Set<Plant> getPlants() {
+    public List<Plant> getPlants() {
         return plants;
     }
 
-    public void addAnimal(Animal animal) {
+    public synchronized void addAnimal(Animal animal) {
         animals.add(animal);
+        animal.setCurrentLocation(Cell.this);
     }
 
-    public void addPlant(Plant plant) {
+    public synchronized void addPlant(Plant plant) {
         plants.add(plant);
     }
 }

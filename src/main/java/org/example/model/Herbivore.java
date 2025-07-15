@@ -1,9 +1,8 @@
 package org.example.model;
 
 public abstract class Herbivore extends Animal {
-    @Override
-    public void move() {
-        System.out.println("Herbivore move");
+    public Herbivore(double foodNeeded, int speed, int maxAmount, double weight) {
+        super(foodNeeded, speed, maxAmount, weight);
     }
 
     @Override

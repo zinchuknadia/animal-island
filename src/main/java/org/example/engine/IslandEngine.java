@@ -6,6 +6,7 @@ import org.example.model.Animal;
 import org.example.model.Plant;
 import org.example.statistics.StatisticPrinter;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -28,17 +29,27 @@ public class IslandEngine {
         ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         for (Cell cell : map.getAllCells()) {
             executor.submit(() -> {
-                for (Animal animal : cell.getAnimals()) {
+                for (Animal animal : new ArrayList<>(cell.getAnimals())) {
                     animal.eat();
-                    animal.reproduce();
-                    animal.move();
+                    try {
+                        animal.reproduce(cell);
+                    }catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        animal.move(map);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-                for (Plant plant : cell.getPlants()) {
-                    plant.reproduce();
+                for (Plant plant : new ArrayList<>(cell.getPlants())) {
+                    plant.reproduce(cell);
+                    plant.spread(map, cell);
                 }
             });
         }
 
         new StatisticPrinter().print(map);
+        System.out.println();
     }
 }

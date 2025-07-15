@@ -5,6 +5,7 @@ import org.example.map.Cell;
 import org.example.model.Animal;
 import org.example.model.Plant;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,11 +14,11 @@ public class StatisticPrinter {
     public void print(IslandMap map) {
         Map<String, Integer> counts = new HashMap<>();
         for(Cell cell : map.getAllCells()){
-            for(Animal animal : cell.getAnimals()){
+            for(Animal animal : new ArrayList<>(cell.getAnimals())){
                 String name = animal.getClass().getSimpleName();
                 counts.put(name, counts.getOrDefault(name, 0) + 1);
             }
-            for(Plant plant : cell.getPlants()){
+            for(Plant plant : new ArrayList<>(cell.getPlants())){
                 String name = plant.getClass().getSimpleName();
                 counts.put(name, counts.getOrDefault(name, 0) + 1);
             }
@@ -25,5 +26,6 @@ public class StatisticPrinter {
 
         System.out.println("Statistics");
         System.out.println(counts);
+        // TODO: detailed animal movement
     }
 }

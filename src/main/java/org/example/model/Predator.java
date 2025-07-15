@@ -1,13 +1,8 @@
 package org.example.model;
 
-public abstract class Predator extends Animal{
-    @Override
-    public void move() {
-        System.out.println("Predator move");
-    }
+public abstract class Predator extends Animal {
 
-    @Override
-    public void eat() {
-        System.out.println("Predator eat");
+    public Predator(double foodNeeded, int speed, int maxAmount, double weight) {
+        super(foodNeeded, speed, maxAmount, weight);
     }
 }

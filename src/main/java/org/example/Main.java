@@ -5,11 +5,10 @@ import org.example.map.IslandMap;
 import org.example.model.Plant;
 import org.example.model.Rabbit;
 import org.example.model.Wolf;
+import org.example.util.RandomUtil;
 
 public class Main {
-    static int width = 100;
-    static int height = 20;
-    private static final IslandMap map = new IslandMap(width, height);
+    private static final IslandMap map = new IslandMap(2, 2);
 
     public static void main(String[] args) {
         initialize();
@@ -17,12 +16,12 @@ public class Main {
     }
 
     public static void initialize() {
-        RandomUtil.getRandomCell(map, width, height).addAnimal(new Wolf());
-        RandomUtil.getRandomCell(map, width, height).addAnimal(new Rabbit());
-        RandomUtil.getRandomCell(map, width, height).addPlant(new Plant());
+        RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight()).addAnimal(new Wolf());
+        RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight()).addPlant(new Plant());
+        RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight()).addAnimal(new Rabbit());
 
-        RandomUtil.getRandomCell(map, width, height).addAnimal(new Wolf());
-        RandomUtil.getRandomCell(map, width, height).addAnimal(new Rabbit());
-        RandomUtil.getRandomCell(map, width, height).addPlant(new Plant());
+        RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight()).addAnimal(new Wolf());
+        RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight()).addAnimal(new Rabbit());
+        RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight()).addPlant(new Plant());
     }
 }
