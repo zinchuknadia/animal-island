@@ -2,6 +2,7 @@ package org.example.model;
 
 import org.example.map.Cell;
 import org.example.map.IslandMap;
+import org.example.statistics.StatisticTracker;
 import org.example.util.RandomUtil;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public abstract class Animal extends Organism {
                     newLocation.addAnimal(this);
                     currentLocation.removeAnimal(this);
                     currentLocation = newLocation;
-                    System.out.println(this.getClass().getSimpleName() + " moved " + currentLocation);
+//                    System.out.println(this.getClass().getSimpleName() + " moved " + currentLocation);
                 }
             }
         }
@@ -73,16 +74,16 @@ public abstract class Animal extends Organism {
                 .count();
     }
 
-    public void eat(Organism prey) {
+    public void eat(Organism prey, StatisticTracker tracker) {
         if(prey == null) return;
 
         int randomChance = RandomUtil.getRandomInt(1, 100);
         int eatChance = getEatChance(this.getId(), prey.getId());
 
         if (randomChance > 0 && randomChance <= eatChance) {
-            System.out.println(this.getClass().getSimpleName() + " eating " + prey.getClass().getSimpleName());
+//            System.out.println(this.getClass().getSimpleName() + " eating " + prey.getClass().getSimpleName());
             getFed(prey);
-            prey.onEaten();
+            prey.onEaten(tracker);
         }
     }
 
@@ -97,17 +98,19 @@ public abstract class Animal extends Organism {
         }
     }
 
-    public void getHungry(){
+    public void getHungry(StatisticTracker tracker){
         fedLevel -= foodNeeded * 0.15;
         if (fedLevel < 0) {
-            System.out.println(this.getClass().getSimpleName() + " died from starvation");
+//            System.out.println(this.getClass().getSimpleName() + " died from starvation");
             this.die();
+            tracker.increment(this.getClass().getSimpleName(), "starved");
         }
     }
 
     @Override
-    public void onEaten(){
+    public void onEaten(StatisticTracker tracker){
         die();
+        tracker.increment(this.getClass().getSimpleName(), "was eaten");
     }
 
     public void die() {
@@ -115,9 +118,9 @@ public abstract class Animal extends Organism {
         boolean removed = currentLocation.removeAnimal(this);
         if(removed) {
             this.isAlive = false;
-            System.out.println(this + " died. Removed from cell? true");
+//            System.out.println(this + " died. Removed from cell? true");
         }else{
-            System.out.println(this + " tried to die, but was not in cell!");
+//            System.out.println(this + " tried to die, but was not in cell!");
         }
     }
 }

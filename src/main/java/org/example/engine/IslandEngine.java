@@ -7,6 +7,7 @@ import org.example.model.Herbivore;
 import org.example.model.Plant;
 import org.example.model.Predator;
 import org.example.statistics.StatisticPrinter;
+import org.example.statistics.StatisticTracker;
 import org.example.util.RandomUtil;
 
 import java.util.ArrayList;
@@ -30,35 +31,42 @@ public class IslandEngine {
     }
 
     public void runCycle() {
-//        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        ExecutorService executor = Executors.newFixedThreadPool(1);
+        StatisticTracker tracker = new StatisticTracker();
+        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         for (Cell cell : map.getAllCells()) {
             executor.submit(() -> {
-                processAnimals(cell);
-                processPlants(cell);
+                processAnimals(cell, tracker);
+                processPlants(cell, tracker);
             });
         }
+        executor.shutdown();
+        try{
+            executor.awaitTermination(1, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        tracker.printStats();
         new StatisticPrinter().print(map);
         System.out.println();
     }
 
-    public void processAnimals(Cell cell) {
+    public void processAnimals(Cell cell, StatisticTracker tracker) {
         for (Animal animal : new ArrayList<>(cell.getAnimals())) {
             try {
                 if (!animal.isAlive()) continue;
-                animal.getHungry();
+                animal.getHungry(tracker);
                 if (!animal.isAlive()) continue;
                 if(animal instanceof Herbivore){
                     Plant plant = getRandomPlant(cell);
                     if(plant != null){
-                        animal.eat(plant);
+                        animal.eat(plant, tracker);
                     } else {
-                        animal.eat(getRandomPrey(cell, animal));
+                        animal.eat(getRandomPrey(cell, animal), tracker);
                     }
                 }else if(animal instanceof Predator){
-                    animal.eat(getRandomPrey(cell, animal));
+                    animal.eat(getRandomPrey(cell, animal), tracker);
                 }
-                animal.reproduce(cell);
+                animal.reproduce(cell, tracker);
                 animal.move(map, animal.getClass());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -66,11 +74,11 @@ public class IslandEngine {
         }
     }
 
-    public void processPlants(Cell cell) {
+    public void processPlants(Cell cell, StatisticTracker tracker) {
         for (Plant plant : new ArrayList<>(cell.getPlants())) {
-            plant.age();
-            plant.reproduce(cell);
-            plant.spread(map, cell);
+            plant.age(tracker);
+            plant.reproduce(cell, tracker);
+            plant.spread(map, cell, tracker);
         }
     }
 

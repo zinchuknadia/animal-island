@@ -26,8 +26,6 @@ public class StatisticPrinter {
             }
         }
 
-        System.out.println("Statistics");
         System.out.println(counts);
-        // TODO: detailed animal movement
     }
 }
