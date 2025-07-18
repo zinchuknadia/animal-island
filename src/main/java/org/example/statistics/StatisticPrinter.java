@@ -15,10 +15,12 @@ public class StatisticPrinter {
         Map<String, Integer> counts = new HashMap<>();
         for(Cell cell : map.getAllCells()){
             for(Animal animal : new ArrayList<>(cell.getAnimals())){
+                if(!animal.isAlive()) continue;
                 String name = animal.getClass().getSimpleName();
                 counts.put(name, counts.getOrDefault(name, 0) + 1);
             }
             for(Plant plant : new ArrayList<>(cell.getPlants())){
+                if(plant.getLifespan() <= 0 || !plant.isAlive()) continue;
                 String name = plant.getClass().getSimpleName();
                 counts.put(name, counts.getOrDefault(name, 0) + 1);
             }

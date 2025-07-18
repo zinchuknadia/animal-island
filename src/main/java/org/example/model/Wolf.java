@@ -1,6 +1,7 @@
 package org.example.model;
 
 import org.example.map.Cell;
+import org.example.util.RandomUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -9,12 +10,7 @@ public class Wolf extends Predator {
 
 
     public Wolf() {
-        super(8, 3, 30, 50);
-    }
-
-    @Override
-    public void eat() {
-        System.out.println("Wolf eat");
+        super(0, 8, 3, 30, 50);
     }
 
     @Override
@@ -24,10 +20,12 @@ public class Wolf extends Predator {
                 if (new ArrayList<>(cell.getAnimals()).stream()
                         .filter(a -> a instanceof Wolf)
                         .toList().size() < maxAmount) {
-                    cell.addAnimal(this.getClass().getConstructor().newInstance());
-                    System.out.println("Wolf reproduced");
+                    if(RandomUtil.getRandomBoolean(1, 4)) {
+                        cell.addAnimal(this.getClass().getConstructor().newInstance());
+                        System.out.println("Wolf reproduced");
+                    }
+                    return;
                 }
-
             }
         }
     }

@@ -16,12 +16,18 @@ public class Main {
     }
 
     public static void initialize() {
-        RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight()).addAnimal(new Wolf());
-        RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight()).addPlant(new Plant());
+        RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight()).addAnimal(new Rabbit());
+        RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight()).addAnimal(new Rabbit());
+        RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight()).addAnimal(new Rabbit());
         RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight()).addAnimal(new Rabbit());
 
         RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight()).addAnimal(new Wolf());
-        RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight()).addAnimal(new Rabbit());
+        RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight()).addAnimal(new Wolf());
+
+        RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight()).addPlant(new Plant());
+        RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight()).addPlant(new Plant());
+        RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight()).addPlant(new Plant());
+        RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight()).addPlant(new Plant());
         RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight()).addPlant(new Plant());
     }
 }

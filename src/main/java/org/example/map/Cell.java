@@ -4,12 +4,12 @@ import org.example.model.Animal;
 import org.example.model.Plant;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Cell {
-    //TODO:synchronize lists to prevent maxAmount overleak
-    private List<Animal> animals = new ArrayList<>();
-    private List<Plant> plants = new ArrayList<>();
+    private final List<Animal> animals = new ArrayList<>();
+    private final List<Plant> plants = new ArrayList<>();
 
     private int x;
     private int y;
@@ -27,20 +27,33 @@ public class Cell {
         return y;
     }
 
-    public List<Animal> getAnimals() {
+    public synchronized List<Animal> getAnimals() {
         return animals;
     }
 
-    public List<Plant> getPlants() {
+    public synchronized List<Plant> getPlants() {
         return plants;
     }
 
     public synchronized void addAnimal(Animal animal) {
         animals.add(animal);
-        animal.setCurrentLocation(Cell.this);
+        if(animal.getCurrentLocation() == null) {
+            animal.setCurrentLocation(this);
+        }
+    }
+
+    public synchronized boolean removeAnimal(Animal animal) {
+         return animals.remove(animal);
     }
 
     public synchronized void addPlant(Plant plant) {
         plants.add(plant);
+        if(plant.getCurrentLocation() == null) {
+            plant.setCurrentLocation(this);
+        }
+    }
+
+    public boolean removePlant(Plant plant) {
+        return plants.remove(plant);
     }
 }

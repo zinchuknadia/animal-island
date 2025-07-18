@@ -2,7 +2,7 @@ package org.example.model;
 
 public abstract class Predator extends Animal {
 
-    public Predator(double foodNeeded, int speed, int maxAmount, double weight) {
-        super(foodNeeded, speed, maxAmount, weight);
+    public Predator(int id, double foodNeeded, int speed, int maxAmount, double weight) {
+        super(id, foodNeeded, speed, maxAmount, weight);
     }
 }

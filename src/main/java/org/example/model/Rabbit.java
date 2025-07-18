@@ -1,13 +1,14 @@
 package org.example.model;
 
 import org.example.map.Cell;
+import org.example.util.RandomUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 public class Rabbit extends Herbivore {
     public Rabbit() {
-        super(0.45, 2, 150, 2);
+        super(7, 0.45, 2, 150, 2);
     }
 
     @Override
@@ -15,10 +16,13 @@ public class Rabbit extends Herbivore {
         for (Animal animal : new ArrayList<>(cell.getAnimals())) {
             if (animal instanceof Rabbit && animal != this) {
                 if (new ArrayList<>(cell.getAnimals()).stream()
-                        .filter(a -> a instanceof Wolf)
+                        .filter(a -> a instanceof Rabbit)
                         .toList().size() < maxAmount) {
-                    cell.addAnimal(this.getClass().getConstructor().newInstance());
-                    System.out.println("Rabbit reproduced");
+                    if(RandomUtil.getRandomBoolean(1, 4)) {
+                        cell.addAnimal(this.getClass().getConstructor().newInstance());
+                        System.out.println("Rabbit reproduced");
+                    }
+                    return;
                 }
             }
         }

@@ -13,8 +13,8 @@ public class RandomUtil {
     }
 
     public static Cell getRandomCell(IslandMap map, Cell cell, int speed) {
-        int x = cell.getX() + ThreadLocalRandom.current().nextInt(--speed, speed + 1);
-        int y = cell.getY() + ThreadLocalRandom.current().nextInt(--speed, speed + 1);
+        int x = cell.getX() + ThreadLocalRandom.current().nextInt(-speed, speed + 1);
+        int y = cell.getY() + ThreadLocalRandom.current().nextInt(-speed, speed + 1);
 
         if (x < 0){
             x = 0;
@@ -33,5 +33,9 @@ public class RandomUtil {
 
     public static boolean getRandomBoolean(int min, int max) {
         return ThreadLocalRandom.current().nextInt(min, max + 1) == min;
+    }
+
+    public static int getRandomInt(int min, int max) {
+        return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 }
