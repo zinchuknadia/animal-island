@@ -1,7 +1,8 @@
-package org.example.model;
+package org.example.model.animals;
 
 import org.example.map.Cell;
 import org.example.map.IslandMap;
+import org.example.model.Organism;
 import org.example.statistics.StatisticTracker;
 import org.example.util.RandomUtil;
 

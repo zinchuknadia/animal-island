@@ -1,4 +1,4 @@
-package org.example;
+package org.example.app;
 
 import org.example.engine.IslandEngine;
 import org.example.map.IslandMap;

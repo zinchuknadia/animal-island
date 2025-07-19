@@ -1,4 +1,4 @@
-package org.example.model;
+package org.example.model.animals;
 
 public abstract class Predator extends Animal {
 

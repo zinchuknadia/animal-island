@@ -2,10 +2,10 @@ package org.example.engine;
 
 import org.example.map.Cell;
 import org.example.map.IslandMap;
-import org.example.model.Animal;
-import org.example.model.Herbivore;
-import org.example.model.Plant;
-import org.example.model.Predator;
+import org.example.model.animals.Animal;
+import org.example.model.animals.Herbivore;
+import org.example.model.plants.Plant;
+import org.example.model.animals.Predator;
 import org.example.statistics.StatisticPrinter;
 import org.example.statistics.StatisticTracker;
 import org.example.util.RandomUtil;

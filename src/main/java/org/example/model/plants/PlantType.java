@@ -1,4 +1,4 @@
-package org.example.model;
+package org.example.model.plants;
 
 public enum PlantType {
     GRASS(6, "\uD83C\uDF31");

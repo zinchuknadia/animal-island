@@ -12,7 +12,7 @@ public abstract class Organism {
     protected boolean isAlive;
     protected final int id;
 
-    Cell currentLocation;
+     protected Cell currentLocation;
 
     public Organism(int id, double weight, int maxAmount) {
         this.id = id;

@@ -1,6 +1,12 @@
 package org.example.factory;
 
-import org.example.model.*;
+import org.example.model.animals.Animal;
+import org.example.model.animals.AnimalType;
+import org.example.model.animals.Rabbit;
+import org.example.model.animals.Wolf;
+import org.example.model.plants.Grass;
+import org.example.model.plants.Plant;
+import org.example.model.plants.PlantType;
 
 import java.util.Map;
 import java.util.function.Supplier;

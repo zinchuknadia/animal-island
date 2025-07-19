@@ -1,4 +1,4 @@
-package org.example.model;
+package org.example.model.animals;
 
 public enum AnimalType {
     RABBIT(5, "\uD83D\uDC07"),

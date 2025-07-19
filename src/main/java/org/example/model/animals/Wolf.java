@@ -1,11 +1,4 @@
-package org.example.model;
-
-import org.example.map.Cell;
-import org.example.statistics.StatisticTracker;
-import org.example.util.RandomUtil;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
+package org.example.model.animals;
 
 public class Wolf extends Predator {
 

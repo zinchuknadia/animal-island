@@ -1,7 +1,7 @@
 package org.example.map;
 
-import org.example.model.Animal;
-import org.example.model.Plant;
+import org.example.model.animals.Animal;
+import org.example.model.plants.Plant;
 
 import java.util.ArrayList;
 import java.util.Collections;

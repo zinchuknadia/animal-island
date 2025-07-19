@@ -1,10 +1,10 @@
-package org.example;
+package org.example.app;
 
 import org.example.factory.EntityFactory;
 import org.example.map.Cell;
 import org.example.map.IslandMap;
-import org.example.model.AnimalType;
-import org.example.model.PlantType;
+import org.example.model.animals.AnimalType;
+import org.example.model.plants.PlantType;
 import org.example.util.RandomUtil;
 
 public class IslandInitializer {
