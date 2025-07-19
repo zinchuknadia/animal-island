@@ -12,7 +12,7 @@ public class EntityFactory {
     );
 
     private static final Map<PlantType, Supplier<Plant>> plantSupplier = Map.of(
-            PlantType.GRASS, Plant::new
+            PlantType.GRASS, Grass::new
     );
 
     public static Animal createAnimal(AnimalType type) {

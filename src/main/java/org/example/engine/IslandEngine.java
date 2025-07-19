@@ -71,7 +71,7 @@ public class IslandEngine {
                     animal.eat(getRandomPrey(cell, animal), tracker);
                 }
                 animal.reproduce(cell, tracker);
-                animal.move(map, animal.getClass());
+                animal.move(map);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -80,9 +80,13 @@ public class IslandEngine {
 
     public void processPlants(Cell cell, StatisticTracker tracker) {
         for (Plant plant : new ArrayList<>(cell.getPlants())) {
-            plant.age(tracker);
-            plant.reproduce(cell, tracker);
-            plant.spread(map, cell, tracker);
+            try{
+                plant.age(tracker);
+                plant.reproduce(cell, tracker);
+                plant.spread(map, cell, tracker);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
