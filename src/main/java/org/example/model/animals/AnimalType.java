@@ -14,7 +14,8 @@ public enum AnimalType {
     SHEEP(3, "\uD83D\uDC11"),
     BOAR(5, "\uD83D\uDC17"),
     BUFFALO(5, "\uD83D\uDC03"),
-    DUCK(5, "\uD83E\uDD86"),;
+    DUCK(5, "\uD83E\uDD86"),
+    CATERPILLAR(5, "\uD83D\uDC1B");
 
     private final int initialPopulation;
     private final String emoji;
