@@ -8,8 +8,9 @@ public enum AnimalType {
     EAGLE(5, "\uD83E\uDD85"),
     HORSE(5, "\uD83D\uDC0E"),
     DEER(5, "\uD83E\uDD8C"),
-    SHEEP(3, "\uD83D\uDC11"),
-    RABBIT(5, "\uD83D\uDC07");
+    RABBIT(5, "\uD83D\uDC07"),
+    MOUSE(5, "\uD83D\uDC01"),
+    SHEEP(3, "\uD83D\uDC11");
 
     private final int initialPopulation;
     private final String emoji;

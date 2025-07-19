@@ -18,6 +18,7 @@ public class EntityFactory {
             AnimalType.HORSE, Horse::new,
             AnimalType.DEER, Deer::new,
             AnimalType.RABBIT, Rabbit::new,
+            AnimalType.MOUSE, Mouse::new,
             AnimalType.SHEEP, Sheep::new
     );
 
