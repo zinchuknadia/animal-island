@@ -12,7 +12,8 @@ public class EntityFactory {
     private static final Map<AnimalType, Supplier<Animal>> animalSupplier = Map.of(
             AnimalType.RABBIT, Rabbit::new,
             AnimalType.WOLF, Wolf::new,
-            AnimalType.SHEEP, Sheep::new
+            AnimalType.SHEEP, Sheep::new,
+            AnimalType.BOA, Boa::new
     );
 
     private static final Map<PlantType, Supplier<Plant>> plantSupplier = Map.of(
