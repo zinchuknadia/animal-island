@@ -1,10 +1,11 @@
 package org.example.model.animals;
 
 public enum AnimalType {
-    RABBIT(5, "\uD83D\uDC07"),
     WOLF(3, "\uD83D\uDC3A"),
+    BOA(5, "\uD83D\uDC0D"),
+    FOX(5, "\uD83E\uDD8A"),
     SHEEP(3, "\uD83D\uDC11"),
-    BOA(5, "\uD83D\uDC0D");
+    RABBIT(5, "\uD83D\uDC07");
 
     private final int initialPopulation;
     private final String emoji;

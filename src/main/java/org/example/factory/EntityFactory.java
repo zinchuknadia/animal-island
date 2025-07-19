@@ -10,10 +10,11 @@ import java.util.function.Supplier;
 
 public class EntityFactory {
     private static final Map<AnimalType, Supplier<Animal>> animalSupplier = Map.of(
-            AnimalType.RABBIT, Rabbit::new,
             AnimalType.WOLF, Wolf::new,
-            AnimalType.SHEEP, Sheep::new,
-            AnimalType.BOA, Boa::new
+            AnimalType.BOA, Boa::new,
+            AnimalType.FOX, Fox::new,
+            AnimalType.RABBIT, Rabbit::new,
+            AnimalType.SHEEP, Sheep::new
     );
 
     private static final Map<PlantType, Supplier<Plant>> plantSupplier = Map.of(
