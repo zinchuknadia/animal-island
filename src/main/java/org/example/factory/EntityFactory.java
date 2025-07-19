@@ -22,7 +22,8 @@ public class EntityFactory {
             entry(AnimalType.MOUSE, Mouse::new),
             entry(AnimalType.GOAT, Goat::new),
             entry(AnimalType.SHEEP, Sheep::new),
-            entry(AnimalType.BOAR, Boar::new)
+            entry(AnimalType.BOAR, Boar::new),
+            entry(AnimalType.BUFFALO, Buffalo::new)
     );
 
     private static final Map<PlantType, Supplier<Plant>> plantSupplier = Map.of(
