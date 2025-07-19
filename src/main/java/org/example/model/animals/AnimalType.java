@@ -5,6 +5,7 @@ public enum AnimalType {
     BOA(5, "\uD83D\uDC0D"),
     FOX(5, "\uD83E\uDD8A"),
     BEAR(5, "\uD83D\uDC3B"),
+    EAGLE(5, "\uD83E\uDD85"),
     SHEEP(3, "\uD83D\uDC11"),
     RABBIT(5, "\uD83D\uDC07");
 
