@@ -103,14 +103,14 @@ public abstract class Animal extends Organism {
         if (fedLevel < 0) {
 //            System.out.println(this.getClass().getSimpleName() + " died from starvation");
             this.die();
-            tracker.increment(this.getClass().getSimpleName(), "starved");
+            tracker.increment(this.getClass().getSimpleName() + AnimalType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(), "starved");
         }
     }
 
     @Override
     public void onEaten(StatisticTracker tracker){
         die();
-        tracker.increment(this.getClass().getSimpleName(), "was eaten");
+        tracker.increment(this.getClass().getSimpleName() + AnimalType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(), "was eaten");
     }
 
     public void die() {

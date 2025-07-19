@@ -25,8 +25,12 @@ public class IslandEngine {
     }
 
     ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+    StatisticPrinter statisticPrinter = new StatisticPrinter();
 
     public void engineStart() {
+        System.out.println("=== Initial statistics ===");
+        statisticPrinter.print(map);
+        System.out.println();
         scheduledExecutorService.scheduleAtFixedRate(this::runCycle, 0, 1, TimeUnit.SECONDS);
     }
 
@@ -46,7 +50,7 @@ public class IslandEngine {
             e.printStackTrace();
         }
         tracker.printStats();
-        new StatisticPrinter().print(map);
+        statisticPrinter.print(map);
         System.out.println();
     }
 

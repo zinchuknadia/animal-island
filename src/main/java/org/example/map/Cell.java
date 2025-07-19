@@ -8,8 +8,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class Cell {
-    private final List<Animal> animals = new ArrayList<>();
-    private final List<Plant> plants = new ArrayList<>();
+    private final List<Animal> animals = Collections.synchronizedList(new ArrayList<>());
+    private final List<Plant> plants = Collections.synchronizedList(new ArrayList<>());
 
     private int x;
     private int y;

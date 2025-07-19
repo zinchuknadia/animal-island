@@ -21,7 +21,7 @@ public class Rabbit extends Herbivore {
                         .toList().size() < maxAmount) {
                     if(RandomUtil.getRandomBoolean(1, 4)) {
                         cell.addAnimal(this.getClass().getConstructor().newInstance());
-                        tracker.increment(this.getClass().getSimpleName(), "reproduced");
+                        tracker.increment(this.getClass().getSimpleName() + AnimalType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(), "reproduced");
 //                        System.out.println("Rabbit reproduced");
                     }
                     return;
