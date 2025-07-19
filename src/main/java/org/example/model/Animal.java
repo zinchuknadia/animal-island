@@ -5,6 +5,7 @@ import org.example.map.IslandMap;
 import org.example.statistics.StatisticTracker;
 import org.example.util.RandomUtil;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 public abstract class Animal extends Organism {
@@ -36,8 +37,8 @@ public abstract class Animal extends Organism {
         this.speed = speed;
     }
 
-    public void move(IslandMap map, Class<? extends Animal> clazz) {
-        Cell newLocation = findValidLocation(map, clazz);
+    public void move(IslandMap map) {
+        Cell newLocation = findValidLocation(map);
 
         Cell first = currentLocation;
         Cell second = newLocation;
@@ -48,7 +49,7 @@ public abstract class Animal extends Organism {
         }
         synchronized(first){
             synchronized(second) {
-                if (getAnimalCount(newLocation, clazz) < maxAmount) {
+                if (getAnimalCount(newLocation, this.getClass()) < maxAmount) {
                     newLocation.addAnimal(this);
                     currentLocation.removeAnimal(this);
                     currentLocation = newLocation;
@@ -58,13 +59,13 @@ public abstract class Animal extends Organism {
         }
     }
 
-    public Cell findValidLocation(IslandMap map, Class<? extends Animal> clazz) {
+    public Cell findValidLocation(IslandMap map) {
         Cell newLocation;
         int count = 0;
         do {
             newLocation = RandomUtil.getRandomCell(map, currentLocation, speed);
             count++;
-        } while (getAnimalCount(newLocation, clazz) >= maxAmount && count < 5);
+        } while (getAnimalCount(newLocation, this.getClass()) >= maxAmount && count < 5);
         return newLocation;
     }
 
@@ -118,9 +119,21 @@ public abstract class Animal extends Organism {
         boolean removed = currentLocation.removeAnimal(this);
         if(removed) {
             this.isAlive = false;
-//            System.out.println(this + " died. Removed from cell? true");
-        }else{
-//            System.out.println(this + " tried to die, but was not in cell!");
+        }
+    }
+
+    @Override
+    public void reproduce(Cell cell, StatisticTracker tracker) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        for (Animal animal : new ArrayList<>(cell.getAnimals())) {
+            if (animal instanceof Rabbit && animal != this) {
+                if (getAnimalCount(cell, this.getClass()) < maxAmount) {
+                    if(RandomUtil.getRandomBoolean(1, 4)) {
+                        cell.addAnimal(this.getClass().getConstructor().newInstance());
+                        tracker.increment(this.getClass().getSimpleName() + AnimalType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(), "reproduced");
+                    }
+                    return;
+                }
+            }
         }
     }
 }
