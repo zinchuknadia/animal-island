@@ -1,9 +1,6 @@
 package org.example.factory;
 
-import org.example.model.animals.Animal;
-import org.example.model.animals.AnimalType;
-import org.example.model.animals.Rabbit;
-import org.example.model.animals.Wolf;
+import org.example.model.animals.*;
 import org.example.model.plants.Grass;
 import org.example.model.plants.Plant;
 import org.example.model.plants.PlantType;
@@ -14,7 +11,8 @@ import java.util.function.Supplier;
 public class EntityFactory {
     private static final Map<AnimalType, Supplier<Animal>> animalSupplier = Map.of(
             AnimalType.RABBIT, Rabbit::new,
-            AnimalType.WOLF, Wolf::new
+            AnimalType.WOLF, Wolf::new,
+            AnimalType.SHEEP, Sheep::new
     );
 
     private static final Map<PlantType, Supplier<Plant>> plantSupplier = Map.of(
