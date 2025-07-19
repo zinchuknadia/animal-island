@@ -6,20 +6,22 @@ import org.example.model.plants.Plant;
 import org.example.model.plants.PlantType;
 
 import java.util.Map;
+import static java.util.Map.entry;
 import java.util.function.Supplier;
 
 public class EntityFactory {
-    private static final Map<AnimalType, Supplier<Animal>> animalSupplier = Map.of(
-            AnimalType.WOLF, Wolf::new,
-            AnimalType.BOA, Boa::new,
-            AnimalType.FOX, Fox::new,
-            AnimalType.BEAR, Bear::new,
-            AnimalType.EAGLE, Eagle::new,
-            AnimalType.HORSE, Horse::new,
-            AnimalType.DEER, Deer::new,
-            AnimalType.RABBIT, Rabbit::new,
-            AnimalType.MOUSE, Mouse::new,
-            AnimalType.SHEEP, Sheep::new
+    private static final Map<AnimalType, Supplier<Animal>> animalSupplier = Map.ofEntries(
+            entry(AnimalType.WOLF, Wolf::new),
+            entry(AnimalType.BOA, Boa::new),
+            entry(AnimalType.FOX, Fox::new),
+            entry(AnimalType.BEAR, Bear::new),
+            entry(AnimalType.EAGLE, Eagle::new),
+            entry(AnimalType.HORSE, Horse::new),
+            entry(AnimalType.DEER, Deer::new),
+            entry(AnimalType.RABBIT, Rabbit::new),
+            entry(AnimalType.MOUSE, Mouse::new),
+            entry(AnimalType.GOAT, Goat::new),
+            entry(AnimalType.SHEEP, Sheep::new)
     );
 
     private static final Map<PlantType, Supplier<Plant>> plantSupplier = Map.of(
