@@ -3,18 +3,19 @@ package org.example.model.animals;
 import org.example.map.Cell;
 import org.example.map.IslandMap;
 import org.example.model.Organism;
-import org.example.model.animals.herbivore.Rabbit;
-import org.example.statistics.StatisticTracker;
+import org.example.model.plants.Plant;
+import org.example.statistics.EventTracker;
 import org.example.util.RandomUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Animal extends Organism {
     protected int speed;
     protected double foodNeeded;
     protected double fedLevel;
-    protected final int[][] matrix = {
+    protected final int[][] eatChanceMatrix = {
             {0, 0, 0, 0, 0, 10, 15, 60, 80, 60, 70, 15, 10, 40, 0, 0},
             {0, 0, 15, 0, 0, 0, 0, 20, 40, 0, 0, 0, 0, 10, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 70, 90, 0, 0, 0, 0, 60, 40, 0},
@@ -44,13 +45,13 @@ public abstract class Animal extends Organism {
 
         Cell first = currentLocation;
         Cell second = newLocation;
-        if(System.identityHashCode(second) < System.identityHashCode(first)){
+        if (System.identityHashCode(second) < System.identityHashCode(first)) {
             Cell temp = first;
             first = second;
             second = temp;
         }
-        synchronized(first){
-            synchronized(second) {
+        synchronized (first) {
+            synchronized (second) {
                 if (getAnimalCount(newLocation, this.getClass()) < maxAmount) {
                     newLocation.addAnimal(this);
                     currentLocation.removeAnimal(this);
@@ -71,13 +72,15 @@ public abstract class Animal extends Organism {
     }
 
     public int getAnimalCount(Cell cell, Class<? extends Animal> clazz) {
-        return (int) new ArrayList<>(cell.getAnimals()).stream()
+        return (int) cell.getAnimals().stream()
                 .filter(a -> a.getClass().equals(clazz))
                 .count();
     }
 
-    public void eat(Organism prey, StatisticTracker tracker) {
-        if(prey == null) return;
+    public abstract void findAndEat(Cell cell, EventTracker tracker);
+
+    public void eat(Organism prey, EventTracker tracker) {
+        if (prey == null) return;
 
         int randomChance = RandomUtil.getRandomInt(1, 100);
         int eatChance = getEatChance(this.getId(), prey.getId());
@@ -88,18 +91,40 @@ public abstract class Animal extends Organism {
         }
     }
 
-    public int getEatChance(int predator, int prey) {
-        return matrix[predator][prey];
+    public Animal getRandomPrey(Cell cell, Animal predator) {
+        List<Animal> animals = cell.getAnimals();
+        List<Animal> preys = new ArrayList<>();
+        for (Animal animal : animals) {
+            if (!animal.getClass().equals(predator.getClass())) {
+                preys.add(animal);
+            }
+        }
+        if (preys.size() <= 0) {
+            return null;
+        }
+        int randomIndex = RandomUtil.getRandomInt(0, animals.size() - 1);
+        return animals.get(randomIndex);
     }
 
-    public void getFed(Organism prey){
+    public Plant getRandomPlant(Cell cell) {
+        List<Plant> plants = cell.getPlants();
+        if (plants.size() <= 0) return null;
+        int randomIndex = RandomUtil.getRandomInt(0, plants.size() - 1);
+        return plants.get(randomIndex);
+    }
+
+    public int getEatChance(int predator, int prey) {
+        return eatChanceMatrix[predator][prey];
+    }
+
+    public void getFed(Organism prey) {
         fedLevel += prey.getWeight();
         if (fedLevel > foodNeeded) {
             fedLevel = foodNeeded;
         }
     }
 
-    public void getHungry(StatisticTracker tracker){
+    public void getHungry(EventTracker tracker) {
         fedLevel -= foodNeeded * 0.15;
         if (fedLevel < 0) {
             this.die();
@@ -108,25 +133,25 @@ public abstract class Animal extends Organism {
     }
 
     @Override
-    public void onEaten(StatisticTracker tracker){
-        die();
+    public void onEaten(EventTracker tracker) {
+        this.die();
         tracker.increment(this.getClass().getSimpleName() + AnimalType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(), "was eaten");
     }
 
     public void die() {
-        if(!isAlive) return;
+        if (!isAlive) return;
         boolean removed = currentLocation.removeAnimal(this);
-        if(removed) {
+        if (removed) {
             this.isAlive = false;
         }
     }
 
     @Override
-    public void reproduce(Cell cell, StatisticTracker tracker) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        for (Animal animal : new ArrayList<>(cell.getAnimals())) {
-            if (animal instanceof Rabbit && animal != this) {
+    public void reproduce(Cell cell, EventTracker tracker) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        for (Animal animal : cell.getAnimals()) {
+            if (animal.getClass() == this.getClass() && animal != this) {
                 if (getAnimalCount(cell, this.getClass()) < maxAmount) {
-                    if(RandomUtil.getRandomBoolean(1, 4)) {
+                    if (RandomUtil.getRandomBoolean(1, 4)) {
                         cell.addAnimal(this.getClass().getConstructor().newInstance());
                         tracker.increment(this.getClass().getSimpleName() + AnimalType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(), "reproduced");
                     }

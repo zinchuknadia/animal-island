@@ -9,18 +9,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StatisticPrinter {
+public class PopulationPrinter {
 
     public void print(IslandMap map) {
         Map<String, Integer> counts = new HashMap<>();
-        for(Cell cell : map.getAllCells()){
-            for(Animal animal : new ArrayList<>(cell.getAnimals())){
-                if(!animal.isAlive()) continue;
+        for (Cell cell : map.getAllCells()) {
+            for (Animal animal : cell.getAnimals()) {
+                if (!animal.isAlive()) continue;
                 String name = animal.getClass().getSimpleName();
                 counts.put(name, counts.getOrDefault(name, 0) + 1);
             }
-            for(Plant plant : new ArrayList<>(cell.getPlants())){
-                if(plant.getLifespan() <= 0 || !plant.isAlive()) continue;
+            for (Plant plant : cell.getPlants()) {
+                if (plant.getLifespan() <= 0 || !plant.isAlive()) continue;
                 String name = plant.getClass().getSimpleName();
                 counts.put(name, counts.getOrDefault(name, 0) + 1);
             }

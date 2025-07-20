@@ -28,27 +28,27 @@ public class Cell {
     }
 
     public synchronized List<Animal> getAnimals() {
-        return animals;
+        return new ArrayList<>(animals);
     }
 
     public synchronized List<Plant> getPlants() {
-        return plants;
+        return new ArrayList<>(plants);
     }
 
     public synchronized void addAnimal(Animal animal) {
         animals.add(animal);
-        if(animal.getCurrentLocation() == null) {
+        if (animal.getCurrentLocation() == null) {
             animal.setCurrentLocation(this);
         }
     }
 
     public synchronized boolean removeAnimal(Animal animal) {
-         return animals.remove(animal);
+        return animals.remove(animal);
     }
 
     public synchronized void addPlant(Plant plant) {
         plants.add(plant);
-        if(plant.getCurrentLocation() == null) {
+        if (plant.getCurrentLocation() == null) {
             plant.setCurrentLocation(this);
         }
     }

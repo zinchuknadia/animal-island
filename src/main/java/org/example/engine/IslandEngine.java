@@ -6,8 +6,8 @@ import org.example.model.animals.Animal;
 import org.example.model.animals.herbivore.Herbivore;
 import org.example.model.plants.Plant;
 import org.example.model.animals.predator.Predator;
-import org.example.statistics.StatisticPrinter;
-import org.example.statistics.StatisticTracker;
+import org.example.statistics.PopulationPrinter;
+import org.example.statistics.EventTracker;
 import org.example.util.RandomUtil;
 
 import java.util.ArrayList;
@@ -25,17 +25,17 @@ public class IslandEngine {
     }
 
     ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
-    StatisticPrinter statisticPrinter = new StatisticPrinter();
+    PopulationPrinter populationPrinter = new PopulationPrinter();
 
     public void engineStart() {
         System.out.println("=== Initial statistics ===");
-        statisticPrinter.print(map);
+        populationPrinter.print(map);
         System.out.println();
         scheduledExecutorService.scheduleAtFixedRate(this::runCycle, 0, 1, TimeUnit.SECONDS);
     }
 
     public void runCycle() {
-        StatisticTracker tracker = new StatisticTracker();
+        EventTracker tracker = new EventTracker();
         ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         for (Cell cell : map.getAllCells()) {
             executor.submit(() -> {
@@ -44,33 +44,27 @@ public class IslandEngine {
             });
         }
         executor.shutdown();
-        try{
+        try {
             executor.awaitTermination(1, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         tracker.printStats();
-        statisticPrinter.print(map);
+        populationPrinter.print(map);
         System.out.println();
     }
 
-    public void processAnimals(Cell cell, StatisticTracker tracker) {
-        for (Animal animal : new ArrayList<>(cell.getAnimals())) {
+    public void processAnimals(Cell cell, EventTracker tracker) {
+        for (Animal animal : cell.getAnimals()) {
             try {
                 if (!animal.isAlive()) continue;
                 animal.getHungry(tracker);
+
                 if (!animal.isAlive()) continue;
-                if(animal instanceof Herbivore){
-                    Plant plant = getRandomPlant(cell);
-                    if(plant != null){
-                        animal.eat(plant, tracker);
-                    } else {
-                        animal.eat(getRandomPrey(cell, animal), tracker);
-                    }
-                }else if(animal instanceof Predator){
-                    animal.eat(getRandomPrey(cell, animal), tracker);
-                }
+                animal.findAndEat(cell, tracker);
+
                 animal.reproduce(cell, tracker);
+
                 animal.move(map);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -78,37 +72,15 @@ public class IslandEngine {
         }
     }
 
-    public void processPlants(Cell cell, StatisticTracker tracker) {
-        for (Plant plant : new ArrayList<>(cell.getPlants())) {
-            try{
+    public void processPlants(Cell cell, EventTracker tracker) {
+        for (Plant plant : cell.getPlants()) {
+            try {
                 plant.age(tracker);
                 plant.reproduce(cell, tracker);
                 plant.spread(map, cell, tracker);
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    public Animal getRandomPrey(Cell cell, Animal predator) {
-        List<Animal> animals = new ArrayList<>(cell.getAnimals());
-        List<Animal> preys = new ArrayList<>();
-        for (Animal animal : animals) {
-            if (!animal.getClass().equals(predator.getClass())) {
-                preys.add(animal);
-            }
-        }
-        if (preys.size() <= 0) {
-            return null;
-        }
-        int randomIndex = RandomUtil.getRandomInt(0, animals.size() - 1);
-        return animals.get(randomIndex);
-    }
-
-    public Plant getRandomPlant(Cell cell){
-        List<Plant> plants = new ArrayList<>(cell.getPlants());
-        if (plants.size() <= 0) return null;
-        int randomIndex = RandomUtil.getRandomInt(0, plants.size() - 1);
-        return plants.get(randomIndex);
     }
 }

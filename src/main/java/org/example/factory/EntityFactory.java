@@ -8,7 +8,9 @@ import org.example.model.plants.Plant;
 import org.example.model.plants.PlantType;
 
 import java.util.Map;
+
 import static java.util.Map.entry;
+
 import java.util.function.Supplier;
 
 public class EntityFactory {
@@ -36,7 +38,7 @@ public class EntityFactory {
 
     public static Animal createAnimal(AnimalType type) {
         Supplier<Animal> supplier = animalSupplier.get(type);
-        if(supplier == null) {
+        if (supplier == null) {
             throw new IllegalArgumentException("Unknown animal type: " + type);
         }
         return supplier.get();
@@ -44,7 +46,7 @@ public class EntityFactory {
 
     public static Plant createPlant(PlantType type) {
         Supplier<Plant> supplier = plantSupplier.get(type);
-        if(supplier == null) {
+        if (supplier == null) {
             throw new IllegalArgumentException("Unknown plant type: " + type);
         }
         return supplier.get();

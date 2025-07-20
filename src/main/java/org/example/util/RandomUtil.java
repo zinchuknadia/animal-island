@@ -16,15 +16,15 @@ public class RandomUtil {
         int x = cell.getX() + ThreadLocalRandom.current().nextInt(-speed, speed + 1);
         int y = cell.getY() + ThreadLocalRandom.current().nextInt(-speed, speed + 1);
 
-        if (x < 0){
+        if (x < 0) {
             x = 0;
-        }else if(x > map.getWidth() - 1){
+        } else if (x > map.getWidth() - 1) {
             x = map.getWidth() - 1;
         }
 
-        if (y < 0){
+        if (y < 0) {
             y = 0;
-        } else if(y > map.getHeight() - 1){
+        } else if (y > map.getHeight() - 1) {
             y = map.getHeight() - 1;
         }
 

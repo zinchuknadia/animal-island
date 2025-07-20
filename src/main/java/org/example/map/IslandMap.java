@@ -24,6 +24,7 @@ public class IslandMap {
             }
         }
     }
+
     public int getWidth() {
         return width;
     }

@@ -3,11 +3,10 @@ package org.example.model.plants;
 import org.example.map.Cell;
 import org.example.map.IslandMap;
 import org.example.model.Organism;
-import org.example.statistics.StatisticTracker;
+import org.example.statistics.EventTracker;
 import org.example.util.RandomUtil;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 
 public abstract class Plant extends Organism {
     protected int lifespan;
@@ -22,9 +21,9 @@ public abstract class Plant extends Organism {
     }
 
     @Override
-    public void reproduce(Cell cell, StatisticTracker tracker) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        if(!isAlive) return;
-        if(getPlantCount(cell, this.getClass()) < maxAmount) {
+    public void reproduce(Cell cell, EventTracker tracker) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        if (!isAlive) return;
+        if (getPlantCount(cell, this.getClass()) < maxAmount) {
             if (RandomUtil.getRandomBoolean(1, 2)) {
                 cell.addPlant(this.getClass().getConstructor().newInstance());
                 tracker.increment(this.getClass().getSimpleName() + PlantType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(), "reproduced");
@@ -32,11 +31,11 @@ public abstract class Plant extends Organism {
         }
     }
 
-    public void spread(IslandMap map, Cell cell, StatisticTracker tracker) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        if(!isAlive) return;
-        if(RandomUtil.getRandomBoolean(1, 2)) {
+    public void spread(IslandMap map, Cell cell, EventTracker tracker) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        if (!isAlive) return;
+        if (RandomUtil.getRandomBoolean(1, 2)) {
             Cell randomCell = RandomUtil.getRandomCell(map, cell, 1);
-            if(getPlantCount(randomCell, this.getClass()) < maxAmount) {
+            if (getPlantCount(randomCell, this.getClass()) < maxAmount) {
                 randomCell.addPlant(this.getClass().getConstructor().newInstance());
                 tracker.increment(this.getClass().getSimpleName() + PlantType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(), "spread");
             }
@@ -44,27 +43,27 @@ public abstract class Plant extends Organism {
     }
 
     public int getPlantCount(Cell cell, Class<? extends Plant> clazz) {
-        return (int) new ArrayList<>(cell.getPlants()).stream()
+        return (int) cell.getPlants().stream()
                 .filter(a -> a.getClass().equals(clazz))
                 .count();
     }
 
     @Override
-    public void onEaten(StatisticTracker tracker) {
-        if(!isAlive) return;
+    public void onEaten(EventTracker tracker) {
+        if (!isAlive) return;
         boolean removed = currentLocation.removePlant(this);
-        if(removed) {
+        if (removed) {
             isAlive = false;
             tracker.increment(this.getClass().getSimpleName() + PlantType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(), "was eaten");
         }
     }
 
-    public void age(StatisticTracker tracker) {
+    public void age(EventTracker tracker) {
         lifespan--;
-        if(lifespan <= 0) {
-            if(!isAlive) return;
+        if (lifespan <= 0) {
+            if (!isAlive) return;
             boolean removed = currentLocation.removePlant(this);
-            if(removed) {
+            if (removed) {
                 isAlive = false;
                 tracker.increment(this.getClass().getSimpleName() + PlantType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(), "wilted and died");
             }

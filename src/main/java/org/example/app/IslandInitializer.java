@@ -19,19 +19,19 @@ public class IslandInitializer {
             spawnAnimals(type, type.getInitialPopulation());
         }
         for (PlantType type : PlantType.values()) {
-            spawnPlants (type, type.getInitialAmount());
+            spawnPlants(type, type.getInitialAmount());
         }
     }
 
-    public void spawnAnimals(AnimalType type, int count){
-        for(int i = 0; i < count; i++){
+    public void spawnAnimals(AnimalType type, int count) {
+        for (int i = 0; i < count; i++) {
             Cell cell = RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight());
             cell.addAnimal(EntityFactory.createAnimal(type));
         }
     }
 
     public void spawnPlants(PlantType type, int count) {
-        for(int i = 0; i < count; i++){
+        for (int i = 0; i < count; i++) {
             Cell cell = RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight());
             cell.addPlant(EntityFactory.createPlant(type));
         }

@@ -1,8 +1,7 @@
 package org.example.model;
 
 import org.example.map.Cell;
-import org.example.statistics.StatisticTracker;
-import org.example.util.RandomUtil;
+import org.example.statistics.EventTracker;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -12,7 +11,7 @@ public abstract class Organism {
     protected boolean isAlive;
     protected final int id;
 
-     protected Cell currentLocation;
+    protected Cell currentLocation;
 
     public Organism(int id, double weight, int maxAmount) {
         this.id = id;
@@ -41,7 +40,7 @@ public abstract class Organism {
         return isAlive;
     }
 
-    public abstract void onEaten(StatisticTracker tracker);
+    public abstract void onEaten(EventTracker tracker);
 
-    public abstract void reproduce(Cell cell, StatisticTracker tracker) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException;
+    public abstract void reproduce(Cell cell, EventTracker tracker) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException;
 }
