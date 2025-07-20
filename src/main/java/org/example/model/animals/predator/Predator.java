@@ -1,4 +1,6 @@
-package org.example.model.animals;
+package org.example.model.animals.predator;
+
+import org.example.model.animals.Animal;
 
 public abstract class Predator extends Animal {
 

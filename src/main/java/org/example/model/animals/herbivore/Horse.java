@@ -1,4 +1,4 @@
-package org.example.model.animals;
+package org.example.model.animals.herbivore;
 
 public class Horse extends Herbivore {
     public Horse() {

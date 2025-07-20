@@ -1,6 +1,8 @@
 package org.example.factory;
 
 import org.example.model.animals.*;
+import org.example.model.animals.herbivore.*;
+import org.example.model.animals.predator.*;
 import org.example.model.plants.Grass;
 import org.example.model.plants.Plant;
 import org.example.model.plants.PlantType;

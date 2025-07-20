@@ -3,6 +3,7 @@ package org.example.model.animals;
 import org.example.map.Cell;
 import org.example.map.IslandMap;
 import org.example.model.Organism;
+import org.example.model.animals.herbivore.Rabbit;
 import org.example.statistics.StatisticTracker;
 import org.example.util.RandomUtil;
 
@@ -54,7 +55,6 @@ public abstract class Animal extends Organism {
                     newLocation.addAnimal(this);
                     currentLocation.removeAnimal(this);
                     currentLocation = newLocation;
-//                    System.out.println(this.getClass().getSimpleName() + " moved " + currentLocation);
                 }
             }
         }
@@ -83,7 +83,6 @@ public abstract class Animal extends Organism {
         int eatChance = getEatChance(this.getId(), prey.getId());
 
         if (randomChance > 0 && randomChance <= eatChance) {
-//            System.out.println(this.getClass().getSimpleName() + " eating " + prey.getClass().getSimpleName());
             getFed(prey);
             prey.onEaten(tracker);
         }
@@ -103,7 +102,6 @@ public abstract class Animal extends Organism {
     public void getHungry(StatisticTracker tracker){
         fedLevel -= foodNeeded * 0.15;
         if (fedLevel < 0) {
-//            System.out.println(this.getClass().getSimpleName() + " died from starvation");
             this.die();
             tracker.increment(this.getClass().getSimpleName() + AnimalType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(), "starved");
         }
