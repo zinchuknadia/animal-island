@@ -7,6 +7,8 @@ import org.example.model.animals.AnimalType;
 import org.example.model.plants.PlantType;
 import org.example.util.RandomUtil;
 
+import java.util.stream.IntStream;
+
 public class IslandInitializer {
     private final IslandMap map;
 
@@ -24,16 +26,16 @@ public class IslandInitializer {
     }
 
     public void spawnAnimals(AnimalType type, int count) {
-        for (int i = 0; i < count; i++) {
+        IntStream.range(0, count).forEach(i -> {
             Cell cell = RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight());
             cell.addAnimal(EntityFactory.createAnimal(type));
-        }
+        });
     }
 
     public void spawnPlants(PlantType type, int count) {
-        for (int i = 0; i < count; i++) {
+        IntStream.range(0, count).forEach(i -> {
             Cell cell = RandomUtil.getRandomCell(map, map.getWidth(), map.getHeight());
             cell.addPlant(EntityFactory.createPlant(type));
-        }
+        });
     }
 }
