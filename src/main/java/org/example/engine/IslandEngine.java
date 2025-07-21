@@ -3,21 +3,19 @@ package org.example.engine;
 import org.example.map.Cell;
 import org.example.map.IslandMap;
 import org.example.model.animals.Animal;
-import org.example.model.animals.herbivore.Herbivore;
 import org.example.model.plants.Plant;
-import org.example.model.animals.predator.Predator;
 import org.example.statistics.PopulationPrinter;
 import org.example.statistics.EventTracker;
-import org.example.util.RandomUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class IslandEngine {
+    private static final Logger logger = Logger.getLogger(IslandEngine.class.getName());
+
     private final IslandMap map;
 
     public IslandEngine(IslandMap map) {
@@ -67,7 +65,7 @@ public class IslandEngine {
 
                 animal.move(map);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.log(Level.SEVERE, "Error processing animal (" + animal.getClass().getSimpleName() + ") in cell: (" + cell.getX() + " ," + cell.getY() + ")", e);
             }
         }
     }
