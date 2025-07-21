@@ -4,7 +4,9 @@ import org.example.map.Cell;
 import org.example.map.IslandMap;
 import org.example.model.Organism;
 import org.example.model.plants.Plant;
+import org.example.model.plants.PlantType;
 import org.example.statistics.EventTracker;
+import org.example.util.ConsoleColor;
 import org.example.util.RandomUtil;
 
 import java.lang.reflect.InvocationTargetException;
@@ -42,7 +44,7 @@ public abstract class Animal extends Organism {
         this.reproductionChance = 25;
     }
 
-    public void move(IslandMap map) {
+    public void move(IslandMap map, EventTracker tracker) {
         Cell newLocation = findValidLocation(map);
 
         Cell first = currentLocation;
@@ -57,6 +59,8 @@ public abstract class Animal extends Organism {
                 if (getAnimalCount(newLocation, this.getClass()) < maxAmount) {
                     newLocation.addAnimal(this);
                     currentLocation.removeAnimal(this);
+                    tracker.increment(this.getClass().getSimpleName() + AnimalType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(),
+                            ConsoleColor.BLUE + "moved" + ConsoleColor.WHITE + " form (" + currentLocation.getX() + "," + currentLocation.getY() + ") to (" + newLocation.getX() + "," + newLocation.getY() + ")");
                     currentLocation = newLocation;
                 }
             }
@@ -81,14 +85,14 @@ public abstract class Animal extends Organism {
 
     public abstract void findAndEat(Cell cell, EventTracker tracker);
 
-    public void eat(Organism prey, EventTracker tracker) {
+    public void eat(Cell cell, Organism prey, EventTracker tracker) {
         if (prey == null) return;
 
         int randomChance = RandomUtil.getRandomInt(1, 100);
         int eatChance = getEatChance(this.getId(), prey.getId());
 
         if (randomChance > 0 && randomChance <= eatChance) {
-            getFed(prey);
+            getFed(cell, prey, tracker);
             prey.onEaten(tracker);
         }
     }
@@ -119,25 +123,35 @@ public abstract class Animal extends Organism {
         return eatChanceMatrix[predator][prey];
     }
 
-    public void getFed(Organism prey) {
+    public void getFed(Cell cell, Organism prey, EventTracker tracker) {
         fedLevel += prey.getWeight();
         if (fedLevel > foodNeeded) {
             fedLevel = foodNeeded;
         }
+        if (prey instanceof Animal) {
+            tracker.increment(this.getClass().getSimpleName() + AnimalType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(),
+                    ConsoleColor.RED + "ate " + ConsoleColor.WHITE + prey.getClass().getSimpleName() + AnimalType.valueOf(prey.getClass().getSimpleName().toUpperCase()).getEmoji() +
+                            " in cell (" + cell.getX() + "," + cell.getY() + ")");
+        } else if (prey instanceof Plant) {
+            tracker.increment(this.getClass().getSimpleName() + AnimalType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(),
+                    ConsoleColor.RED + "ate " + ConsoleColor.WHITE + prey.getClass().getSimpleName() + PlantType.valueOf(prey.getClass().getSimpleName().toUpperCase()).getEmoji() +
+                            " in cell (" + cell.getX() + "," + cell.getY() + ")");
+        }
     }
 
-    public void getHungry(EventTracker tracker) {
+    public void getHungry(Cell cell, EventTracker tracker) {
         fedLevel -= foodNeeded * 0.15;
         if (fedLevel < 0) {
             this.die();
-            tracker.increment(this.getClass().getSimpleName() + AnimalType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(), "starved");
+            tracker.increment(this.getClass().getSimpleName() + AnimalType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(),
+                    ConsoleColor.YELLOW + "starved" + ConsoleColor.WHITE + " in cell (" + cell.getX() + "," + cell.getY() + ")");
         }
     }
 
     @Override
     public void onEaten(EventTracker tracker) {
         this.die();
-        tracker.increment(this.getClass().getSimpleName() + AnimalType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(), "was eaten");
+//        tracker.increment(this.getClass().getSimpleName() + AnimalType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(), ConsoleColor.RED + "was eaten" + ConsoleColor.WHITE);
     }
 
     public void die() {
@@ -155,7 +169,8 @@ public abstract class Animal extends Organism {
                 if (getAnimalCount(cell, this.getClass()) < maxAmount) {
                     if (RandomUtil.getRandomInt(1, 100) <= reproductionChance) {
                         cell.addAnimal(this.getClass().getConstructor().newInstance());
-                        tracker.increment(this.getClass().getSimpleName() + AnimalType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(), "reproduced");
+                        tracker.increment(this.getClass().getSimpleName() + AnimalType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(),
+                                ConsoleColor.GREEN + "reproduced" + ConsoleColor.WHITE + " in cell (" + cell.getX() + "," + cell.getY() + ")");
                     }
                 }
                 return;

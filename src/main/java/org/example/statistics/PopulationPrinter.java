@@ -5,7 +5,6 @@ import org.example.map.Cell;
 import org.example.model.animals.Animal;
 import org.example.model.plants.Plant;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 

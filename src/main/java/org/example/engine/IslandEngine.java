@@ -6,6 +6,7 @@ import org.example.model.animals.Animal;
 import org.example.model.plants.Plant;
 import org.example.statistics.PopulationPrinter;
 import org.example.statistics.EventTracker;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -56,14 +57,14 @@ public class IslandEngine {
         for (Animal animal : cell.getAnimals()) {
             try {
                 if (!animal.isAlive()) continue;
-                animal.getHungry(tracker);
+                animal.getHungry(cell, tracker);
 
                 if (!animal.isAlive()) continue;
                 animal.findAndEat(cell, tracker);
 
                 animal.reproduce(cell, tracker);
 
-                animal.move(map);
+                animal.move(map, tracker);
             } catch (Exception e) {
                 logger.log(Level.SEVERE, "Error processing animal (" + animal.getClass().getSimpleName() + ") in cell: (" + cell.getX() + " ," + cell.getY() + ")", e);
             }
@@ -73,7 +74,7 @@ public class IslandEngine {
     public void processPlants(Cell cell, EventTracker tracker) {
         for (Plant plant : cell.getPlants()) {
             try {
-                plant.age(tracker);
+                plant.age(cell, tracker);
                 plant.reproduce(cell, tracker);
                 plant.spread(map, cell, tracker);
             } catch (Exception e) {

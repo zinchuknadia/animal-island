@@ -1,24 +1,19 @@
 package org.example.statistics;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class EventTracker {
-    private final Map<String, AtomicInteger> stats = new ConcurrentHashMap<>();
+
+    private final ConcurrentLinkedQueue<String> events = new ConcurrentLinkedQueue<>();
 
     public void increment(String species, String event) {
-        String key = species + ":" + event;
-        stats.computeIfAbsent(key, k -> new AtomicInteger()).incrementAndGet();
+        String key = species + " " + event;
+        events.add(key);
+
     }
 
     public void printStats() {
         System.out.println("=== Statistics for this cycle ===");
-        stats.forEach((key, value) -> {
-            String[] parts = key.split(":");
-            String species = parts[0];
-            String event = parts[1];
-            System.out.printf("%s %s: %d%n", species, event, value.get());
-        });
+        events.forEach(System.out::println);
     }
 }

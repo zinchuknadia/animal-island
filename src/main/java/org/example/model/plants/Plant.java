@@ -4,6 +4,7 @@ import org.example.map.Cell;
 import org.example.map.IslandMap;
 import org.example.model.Organism;
 import org.example.statistics.EventTracker;
+import org.example.util.ConsoleColor;
 import org.example.util.RandomUtil;
 
 import java.lang.reflect.InvocationTargetException;
@@ -26,7 +27,8 @@ public abstract class Plant extends Organism {
         if (getPlantCount(cell, this.getClass()) < maxAmount) {
             if (RandomUtil.getRandomBoolean(1, 2)) {
                 cell.addPlant(this.getClass().getConstructor().newInstance());
-                tracker.increment(this.getClass().getSimpleName() + PlantType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(), "reproduced");
+                tracker.increment(this.getClass().getSimpleName() + PlantType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(),
+                        ConsoleColor.GREEN + "reproduced" + ConsoleColor.WHITE + " in cell (" + cell.getX() + "," + cell.getY() + ")");
             }
         }
     }
@@ -37,7 +39,9 @@ public abstract class Plant extends Organism {
             Cell randomCell = RandomUtil.getRandomCell(map, cell, 1);
             if (getPlantCount(randomCell, this.getClass()) < maxAmount) {
                 randomCell.addPlant(this.getClass().getConstructor().newInstance());
-                tracker.increment(this.getClass().getSimpleName() + PlantType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(), "spread");
+                tracker.increment(this.getClass().getSimpleName() + PlantType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(),
+                        ConsoleColor.GREEN + "spread" + ConsoleColor.WHITE + " from cell (" + cell.getX() + "," + cell.getY() + ")" +
+                                " to cell (" + randomCell.getX() + "," + randomCell.getY() + ")");
             }
         }
     }
@@ -54,18 +58,18 @@ public abstract class Plant extends Organism {
         boolean removed = currentLocation.removePlant(this);
         if (removed) {
             isAlive = false;
-            tracker.increment(this.getClass().getSimpleName() + PlantType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(), "was eaten");
         }
     }
 
-    public void age(EventTracker tracker) {
+    public void age(Cell cell, EventTracker tracker) {
         lifespan--;
         if (lifespan <= 0) {
             if (!isAlive) return;
             boolean removed = currentLocation.removePlant(this);
             if (removed) {
                 isAlive = false;
-                tracker.increment(this.getClass().getSimpleName() + PlantType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(), "wilted and died");
+                tracker.increment(this.getClass().getSimpleName() + PlantType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(),
+                        ConsoleColor.YELLOW + "wilted and died" + ConsoleColor.WHITE + " in cell (" + cell.getX() + "," + cell.getY() + ")");
             }
         }
     }

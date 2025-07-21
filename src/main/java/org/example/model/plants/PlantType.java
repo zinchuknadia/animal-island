@@ -1,7 +1,7 @@
 package org.example.model.plants;
 
 public enum PlantType {
-    GRASS(30, "\uD83C\uDF31");
+    GRASS(10, "\uD83C\uDF31");
 
     private final int initialAmount;
     private final String emoji;

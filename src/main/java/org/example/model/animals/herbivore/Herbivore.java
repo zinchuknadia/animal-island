@@ -13,9 +13,9 @@ public abstract class Herbivore extends Animal {
     public void findAndEat(Cell cell, EventTracker tracker) {
         Plant plant = getRandomPlant(cell);
         if (plant != null) {
-            this.eat(plant, tracker);
+            this.eat(cell, plant, tracker);
         } else {
-            this.eat(getRandomPrey(cell, this), tracker);
+            this.eat(cell, getRandomPrey(cell, this), tracker);
         }
     }
 }

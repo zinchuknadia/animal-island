@@ -1,7 +1,6 @@
 package org.example.model.animals.predator;
 
 import org.example.map.Cell;
-import org.example.model.Organism;
 import org.example.model.animals.Animal;
 import org.example.statistics.EventTracker;
 
@@ -11,6 +10,6 @@ public abstract class Predator extends Animal {
     }
 
     public void findAndEat(Cell cell, EventTracker tracker) {
-        this.eat(getRandomPrey(cell, this), tracker);
+        this.eat(cell, getRandomPrey(cell, this), tracker);
     }
 }
