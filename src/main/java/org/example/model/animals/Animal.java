@@ -15,6 +15,7 @@ public abstract class Animal extends Organism {
     protected int speed;
     protected double foodNeeded;
     protected double fedLevel;
+    protected int reproductionChance;
     protected final int[][] eatChanceMatrix = {
             {0, 0, 0, 0, 0, 10, 15, 60, 80, 60, 70, 15, 10, 40, 0, 0},
             {0, 0, 15, 0, 0, 0, 0, 20, 40, 0, 0, 0, 0, 10, 0, 0},
@@ -38,6 +39,7 @@ public abstract class Animal extends Organism {
         this.foodNeeded = foodNeeded;
         this.fedLevel = foodNeeded;
         this.speed = speed;
+        this.reproductionChance = 25;
     }
 
     public void move(IslandMap map) {
@@ -151,12 +153,12 @@ public abstract class Animal extends Organism {
         for (Animal animal : cell.getAnimals()) {
             if (animal.getClass() == this.getClass() && animal != this) {
                 if (getAnimalCount(cell, this.getClass()) < maxAmount) {
-                    if (RandomUtil.getRandomBoolean(1, 4)) {
+                    if (RandomUtil.getRandomInt(1, 100) <= reproductionChance) {
                         cell.addAnimal(this.getClass().getConstructor().newInstance());
                         tracker.increment(this.getClass().getSimpleName() + AnimalType.valueOf(this.getClass().getSimpleName().toUpperCase()).getEmoji(), "reproduced");
                     }
-                    return;
                 }
+                return;
             }
         }
     }
